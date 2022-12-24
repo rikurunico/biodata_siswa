@@ -1,21 +1,27 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:biodata_siswa/models/anggota.dart';
 
 class IndexPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _nimController = TextEditingController();
+    final _namaController = TextEditingController();
+    final _alamatController = TextEditingController();
+    final _jenisKelaminController = TextEditingController();
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('BIODATA'),
+          title: const Text('BIODATA'),
         ),
         body: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: TextField(
-                decoration: InputDecoration(
+                controller: _nimController,
+                decoration: const InputDecoration(
                   label: Text("NIM"),
                   border: OutlineInputBorder(),
                 ),
@@ -24,37 +30,43 @@ class IndexPage extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: TextField(
-                decoration: InputDecoration(
+                controller: _namaController,
+                decoration: const InputDecoration(
                   label: Text("Nama"),
                   border: OutlineInputBorder(),
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: TextField(
-                decoration: InputDecoration(
+                controller: _alamatController,
+                decoration: const InputDecoration(
                   label: Text("Alamat"),
                   border: OutlineInputBorder(),
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(13),
               child: TextField(
-                decoration: InputDecoration(
+                controller: _jenisKelaminController,
+                decoration: const InputDecoration(
                   label: Text("Jenis Kelamin"),
                   border: OutlineInputBorder(),
                 ),
               ),
             ),
-            Container(padding: EdgeInsets.all(10), child: TanggalLahir()),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: TanggalLahir(),
+            ),
             Container(
               child: ElevatedButton(
                 onPressed: (() {}),
-                child: Text("Simpan"),
+                child: const Text("Simpan"),
               ),
             ),
           ],
@@ -71,6 +83,7 @@ class TanggalLahir extends StatefulWidget {
 
 class _TanggalLahir extends State<TanggalLahir> {
   DateTime selectedDate = DateTime.now();
+  final _tglLahirController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -91,40 +104,16 @@ class _TanggalLahir extends State<TanggalLahir> {
                 firstDate: DateTime(1900),
                 lastDate: DateTime(2100),
               );
-
-              if (newDate == null) return;
-
-              setState(() {
-                selectedDate = newDate;
-              });
+              if (newDate != null) {
+                setState(() {
+                  selectedDate = newDate;
+                });
+              }
             },
-            child: Text('Select Date'),
+            child: const Text('Select Date'),
           ),
         ],
       ),
     );
   }
 }
-
-// class TanggalLahirState extends State<TanggalLahir> {
-//   DateTime selectedDate = DateTime.now();
-
-//   Future<Null> selectDate(BuildContext context) async {
-//     final DateTime? picked = await showDatePicker(
-//         context: context,
-//         initialDate: selectedDate,
-//         firstDate: DateTime(2015, 8),
-//         lastDate: DateTime(2101));
-//     if (picked != null && picked != selectedDate) {
-//       setState(() {
-//         selectedDate = picked;
-//       });
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-//     throw UnimplementedError();
-//   }
-// }
