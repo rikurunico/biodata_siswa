@@ -2,9 +2,9 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:biodata_siswa/models/anggota.dart';
 
-class database {
-  static final database _instance = database.internal();
-  factory database() => _instance;
+class HelperDB {
+  static final HelperDB _instance = HelperDB.internal();
+  factory HelperDB() => _instance;
   final String tableAnggota = 'anggotaTable';
   final String columnId = 'id';
   final String columnNim = 'nim';
@@ -15,7 +15,9 @@ class database {
 
   static Database? _db;
 
-  database.internal();
+  HelperDB.internal();
+
+  static HelperDB get instance => _instance;
 
   Future<Database> get db async {
     if (_db != null) {
@@ -34,18 +36,41 @@ class database {
 
   void _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE $tableAnggota ($columnId INTEGER PRIMARY KEY, $columnNim INTEGER, $columnNama TEXT, $columnAlamat TEXT, $columnJenisKelamin TEXT, $columnTglLahir TEXT)");
+        "CREATE TABLE $tableAnggota ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnNim INTEGER, $columnNama TEXT, $columnAlamat TEXT, $columnJenisKelamin TEXT, $columnTglLahir TEXT)");
   }
 
-  Future<int> saveAnggota(Anggota anggota) async {
-    var dbClient = await db;
-    int res = await dbClient.insert("$tableAnggota", anggota.toMap());
-    return res;
+  Future<void> insertAnggota(Anggota anggota) async {
+    final Database db = await HelperDB().db;
+    await db.insert(
+      "$tableAnggota",
+      anggota.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
-  Future<List> getAllAnggota() async {
-    var dbClient = await db;
-    var result = await dbClient.rawQuery("SELECT * FROM $tableAnggota");
-    return result.toList();
+  Future<List<Anggota>> anggotaList() async {
+    final Database db = await HelperDB().db;
+    final List<Map<String, dynamic>> maps = await db.query("$tableAnggota");
+
+    return List.generate(maps.length, (i) {
+      return Anggota(
+        id: maps[i]['id'],
+        nim: maps[i]['nim'],
+        nama: maps[i]['nama'],
+        alamat: maps[i]['alamat'],
+        jenisKelamin: maps[i]['jenisKelamin'],
+        tglLahir: maps[i]['tglLahir'],
+      );
+    });
+  }
+
+  Future<void> deleteAnggota(int id) async {
+    final db = await HelperDB().db;
+
+    await db.delete(
+      "$tableAnggota",
+      where: "$columnId = ?",
+      whereArgs: [id],
+    );
   }
 }

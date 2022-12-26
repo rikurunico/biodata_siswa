@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:biodata_siswa/models/anggota.dart';
+import 'package:biodata_siswa/database/helperdb.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -10,42 +10,19 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  List<Anggota> anggota = [
-    Anggota(
-        nim: 000001,
-        nama: 'Wazir Qorni Abud',
-        alamat: 'Lamongan',
-        jenisKelamin: "Laki-laki",
-        tglLahir: "2000-01-01"),
-    Anggota(
-        nim: 000002,
-        nama: 'Wazir Qorni Abud 2',
-        alamat: 'Lamongan',
-        jenisKelamin: "Laki-laki",
-        tglLahir: "2000-01-01"),
-    Anggota(
-        nim: 000003,
-        nama: 'Wazir Qorni Abud 3',
-        alamat: 'Lamongan',
-        jenisKelamin: "Laki-laki",
-        tglLahir: "2000-01-01"),
-    Anggota(
-        nim: 000004,
-        nama: 'Wazir Qorni Abud 4',
-        alamat: 'Lamongan',
-        jenisKelamin: "Laki-laki",
-        tglLahir: "2000-01-01"),
-    Anggota(
-        nim: 000005,
-        nama: 'Wazir Qorni Abud 5',
-        alamat: 'Lamongan',
-        jenisKelamin: "Laki-laki",
-        tglLahir: "2000-01-01"),
-  ];
+  //Read Data From Database
+  List<Anggota> anggota = [];
+  void getAnggota() async {
+    anggota = await HelperDB.instance.anggotaList();
+    setState(() {
+      anggota = anggota;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    getAnggota();
   }
 
   @override
@@ -65,6 +42,7 @@ class _DashboardState extends State<Dashboard> {
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
                 Navigator.pushNamed(context, '/detail', arguments: {
+                  'id': anggota[index].id,
                   'nim': anggota[index].nim,
                   'nama': anggota[index].nama,
                   'alamat': anggota[index].alamat,
@@ -78,7 +56,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/new');
+          Navigator.pushNamed(context, '/register');
         },
         child: const Icon(Icons.add),
       ),

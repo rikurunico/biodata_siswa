@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:biodata_siswa/database/helperdb.dart';
 
 class DetailsPage extends StatefulWidget {
   @override
@@ -16,11 +16,51 @@ class _DetailsPageState extends State<DetailsPage> {
       ),
       body: Column(
         children: [
-          Text(args['nim'].toString()),
-          Text(args['nama']),
-          Text(args['alamat']),
-          Text(args['jenisKelamin']),
-          Text(args['tglLahir']),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              "NIM : ${args['nim']}",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              "Nama : ${args['nama']}",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              "Alamat : ${args['alamat']}",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              "Jenis Kelamin : ${args['jenisKelamin']}",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              "Tanggal Lahir : ${args['tglLahir']}",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: ElevatedButton(
+              onPressed: () {
+                HelperDB().deleteAnggota((args['id']));
+                Navigator.pushNamed(context, '/');
+              },
+              child: Text("Delete"),
+            ),
+          ),
         ],
       ),
     );
