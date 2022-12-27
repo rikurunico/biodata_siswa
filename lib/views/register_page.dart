@@ -52,12 +52,37 @@ class RegisterPage extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.all(13),
-              child: TextField(
+              child: TextFormField(
                 controller: _jenisKelaminController,
                 decoration: const InputDecoration(
-                  label: Text("Jenis Kelamin"),
+                  label: Text("Jenis Kelamin (L/P)"),
                   border: OutlineInputBorder(),
                 ),
+                onTap: () async {
+                  String? jenisKelamin = await showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                      title: const Text("Pilih Jenis Kelamin"),
+                      children: [
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.pop(context, "L");
+                          },
+                          child: const Text("Laki-laki"),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.pop(context, "P");
+                          },
+                          child: const Text("Perempuan"),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (jenisKelamin != null) {
+                    _jenisKelaminController.text = jenisKelamin;
+                  }
+                },
               ),
             ),
             Container(
