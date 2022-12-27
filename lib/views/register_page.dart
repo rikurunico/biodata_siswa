@@ -61,26 +61,45 @@ class RegisterPage extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(13),
+              padding: const EdgeInsets.all(10),
               child: TextField(
                 controller: _tglLahirController,
                 decoration: const InputDecoration(
                   label: Text("Tanggal Lahir"),
                   border: OutlineInputBorder(),
                 ),
+                onTap: () async {
+                  DateTime? date = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2025),
+                  );
+                  if (date != null) {
+                    String formattedDate =
+                        "${date.day}-${date.month}-${date.year}";
+                    _tglLahirController.text = formattedDate;
+                  }
+                },
               ),
             ),
             ElevatedButton(
               onPressed: () {
-                Anggota anggota = Anggota(
-                  nim: int.parse(_nimController.text),
-                  nama: _namaController.text,
-                  alamat: _alamatController.text,
-                  jenisKelamin: _jenisKelaminController.text,
-                  tglLahir: _tglLahirController.text,
-                );
-                HelperDB.internal().insertAnggota(anggota);
-                Navigator.pushNamed(context, '/');
+                if (_nimController.text.isNotEmpty &&
+                    _namaController.text.isNotEmpty &&
+                    _alamatController.text.isNotEmpty &&
+                    _jenisKelaminController.text.isNotEmpty &&
+                    _tglLahirController.text.isNotEmpty) {
+                  Anggota anggota = Anggota(
+                    nim: int.parse(_nimController.text),
+                    nama: _namaController.text,
+                    alamat: _alamatController.text,
+                    jenisKelamin: _jenisKelaminController.text,
+                    tglLahir: _tglLahirController.text,
+                  );
+                  HelperDB.instance.insertAnggota(anggota);
+                  Navigator.pushNamed(context, '/');
+                }
               },
               child: const Text("Register"),
             ),

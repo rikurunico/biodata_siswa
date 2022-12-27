@@ -16,39 +16,52 @@ class _DetailsPageState extends State<DetailsPage> {
       ),
       body: Column(
         children: [
+          Center(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                width: 200,
+                height: 200,
+                child: const Icon(
+                  Icons.person,
+                  size: 200,
+                ),
+              ),
+            ),
+          ),
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
               "NIM : ${args['nim']}",
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
               "Nama : ${args['nama']}",
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
               "Alamat : ${args['alamat']}",
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
               "Jenis Kelamin : ${args['jenisKelamin']}",
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
               "Tanggal Lahir : ${args['tglLahir']}",
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
           Container(
@@ -58,7 +71,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 HelperDB().deleteAnggota((args['id']));
                 Navigator.pushNamed(context, '/');
               },
-              child: Text("Delete"),
+              child: const Text("Delete"),
             ),
           ),
         ],
